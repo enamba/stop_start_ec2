@@ -6,24 +6,23 @@ import os
 
 def lambda_handler(event, context):
     time.tzset()
-    hour = time.strftime('%H')
+    time_now = time.strftime('%H:%M')
 
     ec2 = boto3.client('ec2', region_name=os.environ['REGION_NAME'])
     turnOff_instancesId = []
     turnOn_instancesId = []
-    weekArray = ["?", "?", "?", "?", "?", "?", "?"]
-    weekArray[int(time.strftime('%w'))] = "1"
-    findWeek = '.'.join(weekArray)
-    print('Hour: ' + str(hour))
+    weekArray = ["?????", "?????", "?????", "?????", "?????", "?????", "?????"]
+
+    weekArray[int(time.strftime('%w'))] = str(time_now) # places the hour and minute in the array for that weekday
+    findWeek = '.'.join(weekArray)                      # create a custome filter with the weekdays to filter on Ex: nn.20.20.20.20.20.nn
+    
+    
+    print('Time Now: ' + str(time_now))
     print('findWeek: ' + findWeek)
 
     # filter to get all instances to turn on.
     custom_filter = [{
-        'Name': 'tag:on',
-        'Values': [str(hour)]
-    },
-        {
-            'Name': 'tag:weekday_on',
+            'Name': 'tag:schedule_on',
             'Values': [findWeek]
     }]
     response = ec2.describe_instances(Filters=custom_filter)
@@ -33,13 +32,11 @@ def lambda_handler(event, context):
 
     # filter to get all instances to turn off.
     custom_filter = [{
-        'Name': 'tag:off',
-        'Values': [str(hour)]
-    },
-        {
-            'Name': 'tag:weekday_on',
+            'Name': 'tag:schedule_off',
             'Values': [findWeek]
     }]
+    
+     
     response = ec2.describe_instances(Filters=custom_filter)
     for instances in response['Reservations']:
         for instance in instances['Instances']:
