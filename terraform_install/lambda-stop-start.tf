@@ -52,15 +52,15 @@ resource "aws_iam_role_policy_attachment" "eventwatch_ec2_policy_attach" {
   policy_arn = "${aws_iam_policy.eventwatch_ec2_stop_start.arn}"
 }
 
-resource "aws_cloudwatch_event_rule" "every_hour" {
-  name                = "every-hour-ec2"
-  description         = "Fires every hour"
+resource "aws_cloudwatch_event_rule" "every_minute" {
+  name                = "every-minute-ec2"
+  description         = "Fires every minute"
   schedule_expression = "cron(* * * * ? *)"
   tags                = "${var.tags}"
 }
 
-resource "aws_cloudwatch_event_target" "check_every_one_hour_instance" {
-  rule      = "${aws_cloudwatch_event_rule.every_hour.name}"
+resource "aws_cloudwatch_event_target" "check_every_one_minute_instance" {
+  rule      = "${aws_cloudwatch_event_rule.every_minute.name}"
   target_id = "lambda_stop_start_instance"
   arn       = "${aws_lambda_function.lambda_stop_start_instance.arn}"
 }
@@ -70,7 +70,7 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda_stop_start_ins
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.lambda_stop_start_instance.function_name}"
   principal     = "events.amazonaws.com"
-  source_arn    = "${aws_cloudwatch_event_rule.every_hour.arn}"
+  source_arn    = "${aws_cloudwatch_event_rule.every_minute.arn}"
 }
 
 data "archive_file" "zip_ec2" {
