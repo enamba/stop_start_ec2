@@ -39,9 +39,9 @@ Create a role with below policy and attach to lambda function
     ]
 }
 ```
-Create a role on cloudwatch events to run lambda function every hour. You could to use this cron expression
+Create a role on cloudwatch events to run lambda function every minute. You could to use this cron expression
 ```
-cron(1 */1 * * ? *)
+cron(* * * * ? *)
 ```
 
 To this lambda stop and start instances, you need to set some tags on instances.
@@ -53,14 +53,14 @@ To this lambda stop and start instances, you need to set some tags on instances.
 
 ## schedule_on
 
-This tag is required and define each week days and hour that function will run on instances.
+This tag is required and define each week days, hours and minute that function will run on instances.
 
 The parttern is 7 hours (HH:MM) or ones separated by dot:
-0.0.0.0.0.0.0
+00:00.00:00.00:00.00:00.00:00.00:00.00:00
 
 Each position is a weekday, this sequence began on sunday, for example: sunday.monday.tuesday.wednesday.thursday.friday.saturday
 
-If the value is nn:nn the function don't will execute in respective day, but if it's a valid hour the function will be executed
+If the value is nn:nn the function won't execute in respective day, but if it's a valid hour the function will be executed
 
 For example if you want to execute only business days: nn:nn.08:30.08:00.09:10.08:00.08:00.nn:nn
 
@@ -69,10 +69,10 @@ For example if you want to execute only business days: nn:nn.08:30.08:00.09:10.0
 This tag is required and define each week days and hour that function will stop on instances.
 
 The parttern is 7 hours (HH:MM) or ones separated by dot:
-0.0.0.0.0.0.0
+00:00.00:00.00:00.00:00.00:00.00:00.00:00
 
 Each position is a weekday, this sequence began on sunday, for example: sunday.monday.tuesday.wednesday.thursday.friday.saturday
 
-If the value is nn:nn the function don't will execute in respective day, but if it's a valid hour the function will be executed
+If the value is nn:nn the function won't execute in respective day, but if it's a valid hour the function will be executed
 
 For example if you want to execute only business days: nn:nn.08:30.08:00.09:10.08:00.08:00.nn:nn
