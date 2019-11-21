@@ -55,7 +55,7 @@ resource "aws_iam_role_policy_attachment" "eventwatch_ec2_policy_attach" {
 resource "aws_cloudwatch_event_rule" "every_hour" {
   name                = "every-hour-ec2"
   description         = "Fires every hour"
-  schedule_expression = "cron(1 */1 * * ? *)"
+  schedule_expression = "cron(* * * * ? *)"
   tags                = "${var.tags}"
 }
 
