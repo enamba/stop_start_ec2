@@ -46,29 +46,33 @@ cron(1 */1 * * ? *)
 
 To this lambda stop and start instances, you need to set some tags on instances.
 
-- *weekday_on*
-- *on*
-- *off*
+- *schedule_on*
+- *schedule_off*
 
 # Tags descibe
 
-## weekday_on
+## schedule_on
 
-This tag is required and define each week days that function will run on instances.
+This tag is required and define each week days and hour that function will run on instances.
 
-The parttern is 7 zeros or ones separated by dot:
+The parttern is 7 hours (HH:MM) or ones separated by dot:
 0.0.0.0.0.0.0
 
-Each digit is a weekday, this sequence began on sunday, for example: sunday.monday.tuesday.wednesday.thursday.friday.saturday
+Each position is a weekday, this sequence began on sunday, for example: sunday.monday.tuesday.wednesday.thursday.friday.saturday
 
-If the value is zero (0) the function don't will execute in respective day, but if it's one (1) the function will be executed
+If the value is nn:nn the function don't will execute in respective day, but if it's a valid hour the function will be executed
 
-For example if you want to execute only business days: 1.1.1.1.1.0.0
+For example if you want to execute only business days: nn:nn.08:30.08:00.09:10.08:00.08:00.nn:nn
 
-## on
+## schedule_off
 
-Tag "on" mean the hour that instance will turn on. This tag must be with two digits: 00,01,02,03,04,05,06,07....,21,22,23
+This tag is required and define each week days and hour that function will stop on instances.
 
-## off
+The parttern is 7 hours (HH:MM) or ones separated by dot:
+0.0.0.0.0.0.0
 
-Tag "off" mean the hour that instance will turn off. This tag must be with two digits: 00,01,02,03,04,05,06,07....,21,22,23
+Each position is a weekday, this sequence began on sunday, for example: sunday.monday.tuesday.wednesday.thursday.friday.saturday
+
+If the value is nn:nn the function don't will execute in respective day, but if it's a valid hour the function will be executed
+
+For example if you want to execute only business days: nn:nn.08:30.08:00.09:10.08:00.08:00.nn:nn
