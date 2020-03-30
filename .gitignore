@@ -1,0 +1,3 @@
+terraform_install/.terraform/
+terraform_install/src_lambda-start-stop-instance.zip
+terraform_install/terraform.tfstate*

@@ -1,5 +1,5 @@
 resource "aws_iam_role" "iam_lambda_stop_start_instance" {
-  name = "lambda_stop_start_instance"
+  name = "lambda_stop_start_instance_${var.region_name}"
 
   assume_role_policy = <<EOF
 {
@@ -36,12 +36,12 @@ data "aws_iam_policy_document" "eventwatch_ec2_stop_start" {
 }
 
 resource "aws_cloudwatch_log_group" "lambda_start_stop_intance" {
-  name = "/aws/lambda/lambda_start_stop_intance"
+  name = "/aws/lambda/lambda_start_stop_intance_${var.region_name}"
   tags = "${var.tags}"
 }
 
 resource "aws_iam_policy" "eventwatch_ec2_stop_start" {
-  name   = "eventwatch_ec2_stop_start"
+  name   = "eventwatch_ec2_stop_start_${var.region_name}"
   path   = "/"
   policy = "${data.aws_iam_policy_document.eventwatch_ec2_stop_start.json}"
 }
@@ -53,7 +53,7 @@ resource "aws_iam_role_policy_attachment" "eventwatch_ec2_policy_attach" {
 }
 
 resource "aws_cloudwatch_event_rule" "every_minute" {
-  name                = "every-minute-ec2"
+  name                = "every-minute-ec2_${var.region_name}"
   description         = "Fires every minute"
   schedule_expression = "cron(* * * * ? *)"
   tags                = "${var.tags}"
@@ -61,7 +61,7 @@ resource "aws_cloudwatch_event_rule" "every_minute" {
 
 resource "aws_cloudwatch_event_target" "check_every_one_minute_instance" {
   rule      = "${aws_cloudwatch_event_rule.every_minute.name}"
-  target_id = "lambda_stop_start_instance"
+  target_id = "lambda_stop_start_instance_${var.region_name}"
   arn       = "${aws_lambda_function.lambda_stop_start_instance.arn}"
 }
 
@@ -81,7 +81,7 @@ data "archive_file" "zip_ec2" {
 
 resource "aws_lambda_function" "lambda_stop_start_instance" {
   filename         = ""
-  function_name    = "lambda_start_stop_instance"
+  function_name    = "lambda_start_stop_instance_${var.region_name}"
   filename         = "${data.archive_file.zip_ec2.output_path}"
   source_code_hash = "${data.archive_file.zip_ec2.output_base64sha256}"
   role             = "${aws_iam_role.iam_lambda_stop_start_instance.arn}"

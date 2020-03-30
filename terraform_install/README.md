@@ -11,6 +11,7 @@ terraform init
 terraform apply \
   -var 'region_name=us-east-2' \
   -var 'account=748159021624' \
-  -var 'timezone_name=Portugal'
+  -var 'timezone_name=Portugal' \
+  -var 'tags={owner="XXXX"}'
 
   ```

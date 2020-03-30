@@ -75,4 +75,4 @@ Each position is a weekday, this sequence began on sunday, for example: sunday.m
 
 If the value is nn:nn the function won't execute in respective day, but if it's a valid hour the function will be executed
 
-For example if you want to execute only business days: nn:nn.08:30.08:00.09:10.08:00.08:00.nn:nn
+For example if you want to execute only business days: nn:nn.19:00.19:12.19:00.17:00.19:00.nn:nn
